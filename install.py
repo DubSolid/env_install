@@ -6,9 +6,9 @@ import shutil
 
 @dataclass
 class Path:
-    repo_name:  str = field(default_factory=lambda: "env_install")
-    url:        str = field(default_factory=lambda: "https://github.com/DubSolid/env_install")
-    repo_path:  str = field(default_factory=lambda: "./env_install")
+    url:       str = field(default_factory=lambda: "https://github.com/DubSolid/env_install")
+    repo_name: str = field(default_factory=lambda: "env_install")
+    repo_path: str = field(default_factory=lambda: "./env_install")
 
     nvim_source: str = field(init=False)
     tmux_source: str = field(init=False)
@@ -21,6 +21,31 @@ class Path:
         self.nvim_target_directory = os.path.expanduser("~/.config/nvim")
         self.tmux_target_directory = os.path.expanduser("~/.config/tmux")
     
+
+def install_nvim():
+    if shutil.which("nvim"):
+        print("Neovim is already installed.")
+        return
+
+    print("Neovim not found. Attempting to install...")
+    try:
+        subprocess.run(["sudo", "apt", "install", "-y", "neovim"], check=True)
+        print("Neovim installed successfully.")
+    except subprocess.CalledProcessError as e:
+        print(f"Error installing Neovim: {e}")
+
+
+def install_tmux():
+    if shutil.which("tmux"):
+        print("Tmux is already installed.")
+        return
+
+    print("Tmux not found. Attempting to install...")
+    try:
+        subprocess.run(["sudo", "apt", "install", "-y", "tmux"], check=True)
+    except subprocess.CalledProcessError as e:
+        print(f"Error installing Tmux: {e}")
+
 
 def download_repo(paths: Path):
     if not os.path.exists(paths.repo_name):
@@ -54,6 +79,8 @@ def copy_files(paths: Path):
 
 
 if __name__ == "__main__":
+    install_nvim()
+    install_tmux()
     paths = Path()
     download_repo(paths)
     copy_files(paths)
