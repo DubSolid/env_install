@@ -12,7 +12,8 @@ def download_and_copy():
     repo_path = "./env_install"
     nvim_source = os.path.join(repo_path, "nvim")
     tmux_source = os.path.join(repo_path, "tmux")
-    
+
+    # TODO: Check if repo is already cloned correctly
     if not os.path.exists(repo_name):
         try:
             subprocess.run(["git", "clone", url], check=True)
