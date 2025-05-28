@@ -2,9 +2,17 @@ import subprocess
 import os
 import shutil
 
-def download_repo():
+def download_and_copy():
     repo_name = "env_install"
     url = "https://github.com/DubSolid/env_install"
+
+    nvim_target_directory = "~/.config/nvim"
+    tmux_target_directory = "~/.config/tmux"
+
+    repo_path = "./env_install"
+
+    nvim_source = os.path.join(repo_path, "nvim")
+    tmux_source = os.path.join(repo_path, "tmux")
     
     if not os.path.exists(repo_name):
         try:
@@ -14,15 +22,6 @@ def download_repo():
             print(f"Failed to clone repo: {e}")
     else:
         print(f"Repository '{repo_name} already exists.")
-
-def copy_to_config():
-    nvim_target_directory = "~/.config/nvim"
-    tmux_target_directory = "~/.config/tmux"
-
-    repo_path = "./env_install"
-
-    nvim_source = os.path.join(repo_path, "nvim")
-    tmux_source = os.path.join(repo_path, "tmux")
 
     if not os.path.exists(nvim_target_directory):
         try:
@@ -43,5 +42,4 @@ def copy_to_config():
         print(f"Directory '{nvim_target_directory} already exists.")
 
 if __name__ == "__main__":
-    download_repo()
-    copy_to_config()
+    download_and_copy()
